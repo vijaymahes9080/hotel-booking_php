@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Admin Panel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/reg.css" type="text/css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="well">
+            <h2>Add Your Manager</h2>
+            <hr>
+            <form action="" method="post" name="reg" id="reg-form">
+                <div class="form-group">
+                    <label for="fullname">Full Name:</label>
+                    <input type="text" class="form-control" name="fullname" placeholder="example: Jhon Wiki" required>
+                </div>
+                <div class="form-group">
+                    <label for="uname">User Name:</label>
+                    <input type="text" class="form-control" name="uname" placeholder="exmple: witchbug" required>
+                </div>
+                <div class="form-group">
+                    <label for="uemail">Email:</label>
+                    <input type="email" class="form-control" name="uemail" placeholder="example: jhon@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="upass">Password</label>
+                    <input type="text" class="form-control" name="upass" placeholder="abc123" required>
+                </div>
+                <button type="submit" class="btn btn-lg btn-primary button" name="submit" value="Add Manager">Submit</button>
+
+               <br>
+                <div id="click_here">
+                    <a href="../admin.html">Back to Admin Panel</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="../js/db.js"></script>
+    <script>
+        $(document).ready(function() {
+            if (!db.get_session()) {
+                window.location.href = "login.html";
+            }
+
+            $('#reg-form').on('submit', function(e) {
+                e.preventDefault();
+                var name = $('input[name="fullname"]').val();
+                var username = $('input[name="uname"]').val();
+                var email = $('input[name="uemail"]').val();
+                var password = $('input[name="upass"]').val();
+
+                if (!name || !username || !email || !password) {
+                    alert("Please fill in all inputs.");
+                    return;
+                }
+
+                var success = db.reg_user(name, username, password, email);
+                if (success) {
+                    alert('Your Manager has been Added Successfully');
+                    window.location.href = '../admin.html';
+                } else {
+                    alert('Registration failed! username or email already exists');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

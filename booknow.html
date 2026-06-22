@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Hotel Booking</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="admin/css/reg.css" type="text/css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+
+<body>
+    <div class="container">
+      
+       <img class="img-responsive" src="images/home_banner.jpg" style="width:100%; height:180px;">      
+        
+      <div class="well">
+            <h2>Book Now: <span id="room-title">Room</span></h2>
+            <hr>
+            <form action="" method="post" name="room_category" id="booking-form">
+               
+               <div class="form-group">
+                    <label for="checkin">Check In :</label>&nbsp;&nbsp;&nbsp;
+                    <input type="text" class="datepicker" name="checkin" id="checkin" required>
+                </div>
+               
+               <div class="form-group">
+                    <label for="checkout">Check Out:</label>&nbsp;
+                    <input type="text" class="datepicker" name="checkout" id="checkout" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Enter Your Full Name:</label>
+                    <input type="text" class="form-control" name="name" placeholder="John Wick" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Enter Your Phone Number:</label>
+                    <input type="text" class="form-control" name="phone" placeholder="018XXXXXXX" required>
+                </div>
+                 
+                <button type="submit" class="btn btn-lg btn-primary button" name="submit">Book Now</button>
+
+               <br>
+                <div id="click_here">
+                    <a href="index.html">Back to Home</a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+    
+    <!-- jQuery and jQuery UI -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/db.js"></script>
+    <script>
+        $(function() {
+            $(".datepicker").datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
+
+            var params = new URLSearchParams(window.location.search);
+            var roomname = params.get('roomname') || 'Room';
+            var checkin = params.get('checkin') || '';
+            var checkout = params.get('checkout') || '';
+
+            $('#room-title').text(roomname);
+            $('#checkin').val(checkin);
+            $('#checkout').val(checkout);
+
+            $('#booking-form').on('submit', function(e) {
+                e.preventDefault();
+                var cIn = $('#checkin').val();
+                var cOut = $('#checkout').val();
+                var name = $('input[name="name"]').val();
+                var phone = $('input[name="phone"]').val();
+
+                if(!cIn || !cOut || !name || !phone) {
+                    alert("Please fill in all inputs.");
+                    return;
+                }
+
+                var result = db.booknow(cIn, cOut, name, phone, roomname);
+                alert(result);
+                if (result.includes("booked")) {
+                    window.location.href = "index.html";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

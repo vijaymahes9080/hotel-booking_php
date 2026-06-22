@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Hotel Booking</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="admin/css/reg.css" type="text/css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
+    <script src="js/db.js"></script>
+    <script>
+        if (!db.get_session()) {
+            window.location.href = "admin/login.html";
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+      
+       <img class="img-responsive" src="images/home_banner.jpg" style="width:100%; height:180px;">      
+        
+      <div class="well">
+            <h2>EDIT BOOKING</h2>
+            <h2 id="room-category-title">Room Category</h2>
+            <hr>
+            <form action="" method="post" name="room_category" id="edit-booking-form">
+               
+               <div class="form-group">
+                    <label for="checkin">Check In :</label>&nbsp;&nbsp;&nbsp;
+                    <input type="text" class="datepicker" name="checkin" id="checkin" required>
+                </div>
+               
+               <div class="form-group">
+                    <label for="checkout">Check Out:</label>&nbsp;
+                    <input type="text" class="datepicker" name="checkout" id="checkout" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Enter Your Full Name:</label>
+                    <input type="text" class="form-control" name="name" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Enter Your Phone Number:</label>
+                    <input type="text" class="form-control" name="phone" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="book_status">Booking Status:</label>
+                    <select class="form-control" name="book_status" id="book_status">
+                        <option value="true">Booked</option>
+                        <option value="false">Released/Available</option>
+                    </select>
+                </div>
+                 
+                <button type="submit" class="btn btn-lg btn-primary button" name="submit">Update</button>
+
+               <br>
+                <div id="click_here">
+                    <a href="admin.html">Back to Admin Panel</a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+    
+    <!-- jQuery and jQuery UI -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        $(function() {
+            $(".datepicker").datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
+
+            var params = new URLSearchParams(window.location.search);
+            var id = parseInt(params.get('id'));
+
+            var rooms = db.getRooms();
+            var room = rooms.find(function(r) {
+                return r.room_id === id;
+            });
+
+            if (!room) {
+                alert("Room booking record not found.");
+                window.location.href = "show_all_room.html";
+                return;
+            }
+
+            $('#room-category-title').text(room.room_cat + " (Room " + room.room_id + ")");
+            $('#checkin').val(room.checkin);
+            $('#checkout').val(room.checkout);
+            $('#name').val(room.name);
+            $('#phone').val(room.phone);
+            $('#book_status').val(room.book);
+
+            $('#edit-booking-form').on('submit', function(e) {
+                e.preventDefault();
+                var checkin = $('#checkin').val();
+                var checkout = $('#checkout').val();
+                var name = $('#name').val();
+                var phone = $('#phone').val();
+                var bookStatus = $('#book_status').val();
+
+                if (bookStatus === 'false') {
+                    // Release the room
+                    var result = db.edit_all_room('0000-00-00', '0000-00-00', '', '', id, 'false');
+                    alert("Room booking released successfully.");
+                    window.location.href = "show_all_room.html";
+                } else {
+                    var result = db.edit_all_room(checkin, checkout, name, phone, id, 'true');
+                    alert(result);
+                    window.location.href = "show_all_room.html";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

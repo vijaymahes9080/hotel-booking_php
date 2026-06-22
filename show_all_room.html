@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Hotel Booking</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    
+    <script src="js/db.js"></script>
+    <script>
+        if (!db.get_session()) {
+            window.location.href = "admin/login.html";
+        }
+    </script>
+    
+    <style>
+        .well {
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            height: 200px;
+        }
+        
+        body {
+            background-image: url('images/home_bg.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        
+        h4 {
+            color: #ffbb2b;
+        }
+        h6
+        {
+            color: navajowhite;
+            font-family:  monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+      
+       <img class="img-responsive" src="images/home_banner.jpg" style="width:100%; height:180px;">      
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="room.html">Room &amp; Facilities</a></li>
+                    <li><a href="reservation.html">Online Reservation</a></li>
+                    <li class="active"><a href="admin.html">Admin</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" id="logout-btn">
+                            <button type="button" class="btn btn-danger">Logout</button>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div id="booked-rooms-container">
+            <!-- Booked rooms list will be rendered here -->
+        </div>
+
+    </div>
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#logout-btn').on('click', function(e) {
+                e.preventDefault();
+                db.user_logout();
+                window.location.href = "index.html";
+            });
+
+            var rooms = db.getRooms();
+            var container = $('#booked-rooms-container');
+            container.empty();
+
+            var bookedRooms = rooms.filter(function(r) {
+                return r.book === 'true';
+            });
+
+            if (bookedRooms && bookedRooms.length > 0) {
+                bookedRooms.forEach(function(row) {
+                    var html = `
+                        <div class='row'>
+                            <div class='col-md-2'></div>
+                            <div class='col-md-6 well'>
+                                <h4>Room Category: ${row.room_cat} (Room ID: ${row.room_id})</h4><hr>
+                                <h6>Checkin: ${row.checkin} and checkout: ${row.checkout}</h6>
+                                <h6>Name: ${row.name}</h6>
+                                <h6>Phone: ${row.phone}</h6>
+                                <h6>Booking Condition: ${row.book}</h6>
+                            </div>
+                            <div class='col-md-4' style="padding-top: 50px;">
+                                <a href='edit_all_room.html?id=${row.room_id}'><button class='btn btn-primary button'>Edit</button></a>
+                            </div>
+                        </div>
+                    `;
+                    container.append(html);
+                });
+            } else {
+                container.append('<div class="row"><div class="col-md-12 text-center" style="color: white; margin-top: 20px;"><h4>No Booked Rooms Exist</h4></div></div>');
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,26 +1,3 @@
-<?php
-include_once 'include/class.user.php'; 
-$user=new User(); 
- 
-
-if(isset($_REQUEST[ 'submit'])) 
-{ 
-    extract($_REQUEST); 
-    $result=$user->add_room($roomname, $room_qnty, $no_bed, $bedtype,$facility,$price);
-    if($result)
-    {
-        echo "<script type='text/javascript'>
-              alert('Room Added Succesfully');
-         </script>";
-    }
-    else
-    {
-         echo $result;
-    }
-   
-} 
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +7,6 @@ if(isset($_REQUEST[ 'submit']))
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/reg.css" type="text/css">
-    
 </head>
 
 <body>
@@ -38,14 +14,14 @@ if(isset($_REQUEST[ 'submit']))
         <div class="well">
             <h2>Add Room Category</h2>
             <hr>
-            <form action="" method="post" name="room_category">
+            <form action="" method="post" name="room_category" id="add-room-form">
                 <div class="form-group">
                     <label for="roomname">Room Type Name:</label>
                     <input type="text" class="form-control" name="roomname" placeholder="super delux" required>
                 </div>
                  <div class="form-group">
                     <label for="qty">No of Rooms:</label>&nbsp;
-                    <select name="room_qnty">
+                    <select class="form-control" name="room_qnty" style="display:inline-block; width:auto;">
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -60,20 +36,20 @@ if(isset($_REQUEST[ 'submit']))
                 </div>
                 <div class="form-group">
                     <label for="bed">No of Bed:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <select name="no_bed">
+                    <select class="form-control" name="no_bed" style="display:inline-block; width:auto;">
                       <option value="1">1</option>
                       <option value="2">2</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="bedtype">Bed Type:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   <select name="bedtype">
+                   <select class="form-control" name="bedtype" style="display:inline-block; width:auto;">
                       <option value="single">single</option>
                       <option value="double">double</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="Facility">Facility</label>
+                    <label for="facility">Facility</label>
                     <textarea class="form-control" rows="5" name="facility"></textarea>
                 </div>
                <div class="form-group">
@@ -84,14 +60,46 @@ if(isset($_REQUEST[ 'submit']))
 
                <br>
                 <div id="click_here">
-                    <a href="../admin.php">Back to Admin Panel</a>
+                    <a href="../admin.html">Back to Admin Panel</a>
                 </div>
-
 
             </form>
         </div>
     </div>
 
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="../js/db.js"></script>
+    <script>
+        $(document).ready(function() {
+            if (!db.get_session()) {
+                window.location.href = "login.html";
+            }
+
+            $('#add-room-form').on('submit', function(e) {
+                e.preventDefault();
+                var roomname = $('input[name="roomname"]').val();
+                var room_qnty = $('select[name="room_qnty"]').val();
+                var no_bed = $('select[name="no_bed"]').val();
+                var bedtype = $('select[name="bedtype"]').val();
+                var facility = $('textarea[name="facility"]').val();
+                var price = $('input[name="price"]').val();
+
+                if (!roomname || !price) {
+                    alert("Please fill in the room name and price.");
+                    return;
+                }
+
+                var success = db.add_room(roomname, room_qnty, no_bed, bedtype, facility, price);
+                if (success) {
+                    alert('Room Added Successfully');
+                    window.location.href = '../admin.html';
+                } else {
+                    alert('Error: Room category already exists.');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
