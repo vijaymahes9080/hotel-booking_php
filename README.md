@@ -1,94 +1,109 @@
-# 🏨 Online Hotel Booking & Management System
+# 🏨 Grand Horizon - Online Hotel Booking & Management System
+
+![Banner Image](images/home_banner.jpg)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PHP Version](https://img.shields.io/badge/PHP-%3E%3D%207.0-8892BF.svg)](https://www.php.net/)
 [![Database](https://img.shields.io/badge/Database-MySQL-4479A1.svg)](https://www.mysql.com/)
+[![Aesthetic](https://img.shields.io/badge/Design-Premium%20Aesthetic-gold.svg)](#)
 
-A simple, secure, and intuitive web application built with PHP and MySQL to streamline hotel booking operations. It allows travelers to check room availability and book their desired rooms online while providing administrators with a secure portal to manage rooms, bookings, and system configurations.
+Welcome to the **Grand Horizon Hotel Booking & Management System**! This repository showcases a dual-architecture system: a **PHP/MySQL backend application** and a **fully client-side static HTML/CSS/JS frontend application** (using browser `localStorage` to simulate database records).
+
+---
+
+## 📸 Room Gallery & Previews
+
+Experience the luxurious accommodations offered at Grand Horizon:
+
+| 🛌 Duplex Suite | 👨‍👩‍👧‍👦 Family Room |
+|:---:|:---:|
+| ![Duplex Suite](images/home_gallary/1.jpg) | ![Family Room](images/home_gallary/2.jpg) |
+| *Modern duplex living starting at 1,500 tk/night.* | *Spacious comfort starting at 3,500 tk/night.* |
+
+| 🌟 Super Comfort Suite | 🛋️ Lounge & Facilities |
+|:---:|:---:|
+| ![Super Comfort Suite](images/home_gallary/3.jpg) | ![Lounge & Facilities](images/home_gallary/4.jpg) |
+| *Relaxing comfort starting at 2,200 tk/night.* | *Enjoy premium wifi, room service, and AC.* |
+
+---
+
+## ⚡ Dual-Architecture Design
+
+You can choose to run this project in one of two modes:
+
+### 🌐 1. Static Frontend Mode (GitHub Pages/Vercel Ready)
+- **Database Engine**: Simulated via `localStorage` wrapper [js/db.js](js/db.js).
+- **Session Manager**: Tracked inside browser `sessionStorage`.
+- **Files**: All `.html` files in root and `admin/` directory.
+- **Why use it**: Zero-setup preview, hosting on completely static web servers.
+
+### 🐘 2. PHP / MySQL Backend Mode (XAMPP/Production Ready)
+- **Database Engine**: MySQL Server (relational table structure).
+- **Session Manager**: Server-side PHP sessions.
+- **Files**: All `.php` files in root and `admin/` directory.
+- **Why use it**: Traditional database storage with live server processing.
 
 ---
 
 ## 🌟 Key Features
 
-### 👤 User Roles & Functions
-*   **Customer / Traveler Portal**:
-    *   View room categories, facilities, and pricing structure.
-    *   Check live room availability by entering check-in and check-out dates.
-    *   Book rooms online instantly by providing details (name, phone, dates).
-*   **Administrator Portal**:
-    *   Secure login authentication panel.
-    *   Add, edit, or delete room categories (pricing, bed counts, bed type, facilities).
-    *   Dynamically generate and add rooms for each category.
-    *   View all current room bookings, checking check-in/check-out dates.
-    *   Register new admin/manager accounts.
+*   **🔍 Interactive Room Queries**: Check availability instantly by entering check-in and check-out dates.
+*   **🛒 One-Click Reservations**: Streamlined customer booking form capturing name, phone number, and calendar dates.
+*   **🔐 Admin Control Center**: Dynamic administration panel to oversee bookings, edit room category pricing, configure room details, and register new manager profiles.
+*   **🧼 Real-time Room Release**: Admin tools to easily release/unbook rooms back to the available inventory pool.
 
 ---
 
 ## 🛠️ Technology Stack
 
-*   **Backend**: PHP (using MySQLi object-oriented interface)
-*   **Database**: MySQL
-*   **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 3, jQuery
+| Component | Technology Used |
+| :--- | :--- |
+| **Backend** | PHP (MySQLi Object-oriented extension) |
+| **Database** | MySQL (Standard relational tables) |
+| **Storage Mock** | Browser LocalStorage API (HTML5) |
+| **Frontend** | HTML5, CSS3, JavaScript, jQuery |
+| **Styling** | Bootstrap 3 & W3.CSS |
+| **Widgets** | jQuery UI Datepicker |
 
 ---
 
-## 🚀 Installation & Setup Guide
+## 🚀 Setup & Launch Guide
 
-### Prerequisites
-*   Web server environment: **XAMPP / WAMP / MAMP** (Requires a PHP environment with `mysqli` extension enabled).
+### For Static Frontend Mode (HTML)
+1. Open [index.html](index.html) directly in any modern web browser, or host it on a static platform like GitHub Pages or Vercel.
 
-### Step-by-Step Installation
-1.  **Clone the Repository**:
-    ```bash
-    git clone https://github.com/vijaymahes9080/hotel-booking_php.git
-    ```
-2.  **Move to Server Directory**:
-    Place the project folder inside your web server's root directory (e.g., `C:/xampp/htdocs/hotel-booking/`).
-
-3.  **Database Setup**:
-    *   Start Apache and MySQL from your server Control Panel.
-    *   Open your browser and navigate to `http://localhost/phpmyadmin/`.
-    *   Create a new database named `hotel`.
-    *   Import the database schema file [hotel.sql](hotel.sql) located in the project root.
-
-4.  **Configuration**:
-    *   Open [admin/include/db_config.php](admin/include/db_config.php) to verify or adjust database connection parameters:
-        ```php
-        define('DB_SERVER','localhost');
-        define('DB_USERNAME','root');
-        define('DB_PASSWORD','');
-        define('DB_DATABASE','hotel');
-        ```
-
-5.  **Run the Application**:
-    *   Open your browser and navigate to `http://localhost/hotel-booking/index.php`.
+### For PHP & MySQL Backend Mode
+1. **Move Files**: Place the project folder inside your local web server's root directory (e.g., `C:/xampp/htdocs/hotel-booking/`).
+2. **Setup Database**:
+   - Access `http://localhost/phpmyadmin/`.
+   - Create a database named `hotel`.
+   - Import the database schema from [hotel.sql](hotel.sql).
+3. **Configure Connection**:
+   - Check and update database credentials in [admin/include/db_config.php](admin/include/db_config.php).
+4. **Launch**:
+   - Start Apache & MySQL in your XAMPP Control Panel.
+   - Navigate to `http://localhost/hotel-booking/index.php`.
 
 ---
 
-## 🔑 Default Login Credentials
+## 🔑 Default Credentials (Admin & Manager)
 
-Use the following credentials to access the Administrator Panel:
+Use these credentials to access the Administrator portal:
 
-*   **Administrator (Demo)**:
-    *   **Username**: `admin`
-    *   **Password**: `1234`
-*   **Manager (Alternative)**:
-    *   **Username**: `jinat`
-    *   **Password**: `jinat`
+- **Primary Administrator**:
+  - **Username**: `admin`
+  - **Password**: `1234`
+- **Assigned Manager**:
+  - **Username**: `jinat`
+  - **Password**: `jinat`
 
 ---
 
 ## 🔒 Security Notice
 
 > [!WARNING]
-> This application is built as a learning project and does not feature robust encryption for passwords or input sanitization against SQL injections.
-> **Please do not deploy this application on public production servers without adding prepared statements and password hashing.**
-
----
-
-## 📄 License
-
-Distributed under the **MIT License**. See the [LICENSE](LICENSE) file for more details.
+> This application is built as an educational/learning project. In PHP mode, it does not include prepared statements or bcrypt password hashing.
+> **Please do not deploy the PHP version to public production servers without refactoring it for SQL injection safety and secure hashing algorithms.**
 
 ---
 
@@ -97,5 +112,3 @@ Distributed under the **MIT License**. See the [LICENSE](LICENSE) file for more 
 Maintainer: **Vijay Mahes**  
 GitHub: [@vijaymahes9080](https://github.com/vijaymahes9080)  
 Email: [vijaymahes9080@gmail.com](mailto:vijaymahes9080@gmail.com)  
-
-If you run into any issues setting up the application, feel free to open a GitHub issue or contact me directly!
